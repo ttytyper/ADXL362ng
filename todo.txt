@@ -1,0 +1,6 @@
+Missing functionality:
+
+All methods related to the FIFO and filter control registers
+
+autonomousMotionSwitch() initially turns INT1/INT2 high, even if no motion is
+present. Figure out if this can be avoided.
