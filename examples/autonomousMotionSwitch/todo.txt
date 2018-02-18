@@ -1,0 +1,3 @@
+Missing functionality:
+
+All methods related to the FIFO and filter control registers
