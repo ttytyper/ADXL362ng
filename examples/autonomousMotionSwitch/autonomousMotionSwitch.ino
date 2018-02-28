@@ -20,7 +20,7 @@
 #include <ADXL362ng.h>
 #include <LowPower.h>
 
-ADXL362ng motion(CS_PIN);
+ADXL362ng motion;
 
 void setup() {
 	while(!Serial); // Wait for Serial connection (only works on USB boards)
@@ -31,7 +31,7 @@ void setup() {
 	pinMode(MCU_INT,INPUT);
 	pinMode(LED_PIN,OUTPUT);
 
-	if(motion.begin()) {
+	if(motion.begin(CS_PIN)) {
 		Serial.println(F("ADXL362 Sensor detected"));
 	}
 	else {

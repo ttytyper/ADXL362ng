@@ -9,16 +9,13 @@
 #include <ADXL362ng.h>
 
 // Constructor and general methods {{{
-/*
- * The constructor needs to know which MCU pin is connected to the CS (slave
- * select) pin on the ADXL362
- */
-ADXL362ng::ADXL362ng(uint16_t csPin) {
-	this->csPin = csPin;
+ADXL362ng::ADXL362ng() {
 }
 
-// Checks that the connected device is indeed ADXL362, and resets it
-bool ADXL362ng::begin() {
+// Checks that the connected device is indeed ADXL362, and resets it.
+// Needs the CS / Slave Select pin
+bool ADXL362ng::begin(uint16_t csPin) {
+	this->csPin = csPin;
 	SPI.begin();
 	SPI.setDataMode(SPI_MODE0);
 	pinMode(this->csPin,OUTPUT);

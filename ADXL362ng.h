@@ -88,8 +88,8 @@
 class ADXL362ng {
 public:
 	/* Constructor and general methods */
-	ADXL362ng(uint16_t csPin);
-	bool begin();
+	ADXL362ng();
+	bool begin(uint16_t csPin);
 	bool isValidAdxl362();
 	bool ready();
 	/* Helper(s) for common use cases */
