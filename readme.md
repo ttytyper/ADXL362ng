@@ -9,6 +9,11 @@ is untested.
 FIFO functionality is not implemented. Methods for setting some of the FIFO
 registers are implemented, but no there's no code to actually read data.
 
+## Bugs
+
+autonomousMotionSwitch() initially turns INT1/INT2 high, even if no motion was
+present
+
 ## Also see
 
 If this library doesn't cover your needs, check out https://github.com/annem/ADXL362
