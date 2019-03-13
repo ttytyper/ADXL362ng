@@ -1,5 +1,7 @@
 #ifndef ADXL362_H
 #define ADXL362_H
+#include <Arduino.h>
+#include <SPI.h>
 
 // Instructions
 #define ADXL362_CMD_WRITE 0x0A
@@ -171,7 +173,7 @@ public:
 	bool setExternalClock(bool enabled=true);
 	bool getExternalClock();
 	/* Debugging */
-	void printRegisters();
+	void printRegisters(Stream *debug);
 private:
 	uint16_t csPin;
 	int8_t readRegister(byte address);

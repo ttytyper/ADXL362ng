@@ -4,9 +4,7 @@
 * Datasheet: http://www.analog.com/media/en/technical-documentation/data-sheets/ADXL362.pdf
 */
 
-#include <Arduino.h>
-#include <SPI.h>
-#include <ADXL362ng.h>
+#include "ADXL362ng.h"
 
 // Constructor and general methods {{{
 ADXL362ng::ADXL362ng() {
@@ -433,11 +431,10 @@ int16_t ADXL362ng::readDoubleRegister(byte startAddress) {
 }
 
 // Method for debugging. Prints all registers
-/*
-void ADXL362ng::printRegisters() {
-	Serial.println(F("Printing content of all registers"));
-	Serial.println();
-	Serial.println(F("Register  Value"));
+void ADXL362ng::printRegisters(Stream *debug) {
+	debug->println(F("Printing content of all registers"));
+	debug->println();
+	debug->println(F("Register  Value"));
 	sSelect();
 	SPI.transfer(ADXL362_CMD_READ);
 	SPI.transfer(0x00); // Starting address
@@ -445,45 +442,44 @@ void ADXL362ng::printRegisters() {
 		byte val=SPI.transfer(0x00); // Read value
 		char buf[25] = {0};
 		snprintf(buf,25,"0x%02x = 0x%02x (%3d) ",reg,val,val);
-		Serial.print(buf);
+		debug->print(buf);
 		switch(reg) {
-			case ADXL362_REG_DEVID_AD      : Serial.print(F(" DEVID_AD")); break;
-			case ADXL362_REG_DEVID_MST     : Serial.print(F(" DEVID_MST")); break;
-			case ADXL362_REG_PARTID        : Serial.print(F(" REG_PARTID")); break;
-			case ADXL362_REG_REVID         : Serial.print(F(" REG_REVID")); break;
-			case ADXL362_REG_XDATA         : Serial.print(F(" REG_XDATA")); break;
-			case ADXL362_REG_YDATA         : Serial.print(F(" REG_YDATA")); break;
-			case ADXL362_REG_ZDATA         : Serial.print(F(" REG_ZDATA")); break;
-			case ADXL362_REG_STATUS        : Serial.print(F(" REG_STATUS")); break;
-			case ADXL362_REG_XDATA_L       : Serial.print(F(" REG_XDATA_L")); break;
-			case ADXL362_REG_XDATA_H       : Serial.print(F(" REG_XDATA_H")); break;
-			case ADXL362_REG_YDATA_L       : Serial.print(F(" REG_YDATA_L")); break;
-			case ADXL362_REG_YDATA_H       : Serial.print(F(" REG_YDATA_H")); break;
-			case ADXL362_REG_ZDATA_L       : Serial.print(F(" REG_ZDATA_L")); break;
-			case ADXL362_REG_ZDATA_H       : Serial.print(F(" REG_ZDATA_H")); break;
-			case ADXL362_REG_TEMP_L        : Serial.print(F(" REG_TEMP_L")); break;
-			case ADXL362_REG_TEMP_H        : Serial.print(F(" REG_TEMP_H")); break;
-			case ADXL362_REG_SOFTRST       : Serial.print(F(" REG_SOFTRST")); break;
-			case ADXL362_REG_THRES_ACT_L   : Serial.print(F(" REG_THRES_ACT_L")); break;
-			case ADXL362_REG_THRES_ACT_H   : Serial.print(F(" REG_THRES_ACT_H")); break;
-			case ADXL362_REG_TIME_ACT      : Serial.print(F(" REG_TIME_ACT")); break;
-			case ADXL362_REG_THRES_INACT_L : Serial.print(F(" REG_THRES_INACT_L")); break;
-			case ADXL362_REG_THRES_INACT_H : Serial.print(F(" REG_THRES_INACT_H")); break;
-			case ADXL362_REG_TIME_INACT_L  : Serial.print(F(" REG_TIME_INACT_L")); break;
-			case ADXL362_REG_TIME_INACT_H  : Serial.print(F(" REG_TIME_INACT_H")); break;
-			case ADXL362_REG_ACT_INACT_CTL : Serial.print(F(" REG_ACT_INACT_CTL")); break;
-			case ADXL362_REG_INT1          : Serial.print(F(" REG_INT1")); break;
-			case ADXL362_REG_INT2          : Serial.print(F(" REG_INT2")); break;
-			case ADXL362_REG_FILTER_CTL    : Serial.print(F(" REG_FILTER_CTL")); break;
-			case ADXL362_REG_PWRCTL        : Serial.print(F(" REG_PWRCTL")); break;
-			case ADXL362_REG_INVALID       : Serial.print(F(" REG_INVALID")); break;
+			case ADXL362_REG_DEVID_AD      : debug->print(F(" DEVID_AD")); break;
+			case ADXL362_REG_DEVID_MST     : debug->print(F(" DEVID_MST")); break;
+			case ADXL362_REG_PARTID        : debug->print(F(" REG_PARTID")); break;
+			case ADXL362_REG_REVID         : debug->print(F(" REG_REVID")); break;
+			case ADXL362_REG_XDATA         : debug->print(F(" REG_XDATA")); break;
+			case ADXL362_REG_YDATA         : debug->print(F(" REG_YDATA")); break;
+			case ADXL362_REG_ZDATA         : debug->print(F(" REG_ZDATA")); break;
+			case ADXL362_REG_STATUS        : debug->print(F(" REG_STATUS")); break;
+			case ADXL362_REG_XDATA_L       : debug->print(F(" REG_XDATA_L")); break;
+			case ADXL362_REG_XDATA_H       : debug->print(F(" REG_XDATA_H")); break;
+			case ADXL362_REG_YDATA_L       : debug->print(F(" REG_YDATA_L")); break;
+			case ADXL362_REG_YDATA_H       : debug->print(F(" REG_YDATA_H")); break;
+			case ADXL362_REG_ZDATA_L       : debug->print(F(" REG_ZDATA_L")); break;
+			case ADXL362_REG_ZDATA_H       : debug->print(F(" REG_ZDATA_H")); break;
+			case ADXL362_REG_TEMP_L        : debug->print(F(" REG_TEMP_L")); break;
+			case ADXL362_REG_TEMP_H        : debug->print(F(" REG_TEMP_H")); break;
+			case ADXL362_REG_SOFTRST       : debug->print(F(" REG_SOFTRST")); break;
+			case ADXL362_REG_THRES_ACT_L   : debug->print(F(" REG_THRES_ACT_L")); break;
+			case ADXL362_REG_THRES_ACT_H   : debug->print(F(" REG_THRES_ACT_H")); break;
+			case ADXL362_REG_TIME_ACT      : debug->print(F(" REG_TIME_ACT")); break;
+			case ADXL362_REG_THRES_INACT_L : debug->print(F(" REG_THRES_INACT_L")); break;
+			case ADXL362_REG_THRES_INACT_H : debug->print(F(" REG_THRES_INACT_H")); break;
+			case ADXL362_REG_TIME_INACT_L  : debug->print(F(" REG_TIME_INACT_L")); break;
+			case ADXL362_REG_TIME_INACT_H  : debug->print(F(" REG_TIME_INACT_H")); break;
+			case ADXL362_REG_ACT_INACT_CTL : debug->print(F(" REG_ACT_INACT_CTL")); break;
+			case ADXL362_REG_INT1          : debug->print(F(" REG_INT1")); break;
+			case ADXL362_REG_INT2          : debug->print(F(" REG_INT2")); break;
+			case ADXL362_REG_FILTER_CTL    : debug->print(F(" REG_FILTER_CTL")); break;
+			case ADXL362_REG_PWRCTL        : debug->print(F(" REG_PWRCTL")); break;
+			case ADXL362_REG_INVALID       : debug->print(F(" REG_INVALID")); break;
 		}
-		Serial.println();
+		debug->println();
 	}
-	Serial.println();
+	debug->println();
 	sDeselect();
 }
-*/
 // }}}
 
 // SPI selectors {{{
