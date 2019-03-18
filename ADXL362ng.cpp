@@ -10,10 +10,13 @@
 ADXL362ng::ADXL362ng() {
 }
 
+ADXL362ng::ADXL362ng(uint8_t csPin) {
+	this->csPin = csPin;
+}
+
 // Checks that the connected device is indeed ADXL362, and resets it.
 // Needs the CS / Slave Select pin
-bool ADXL362ng::begin(uint16_t csPin) {
-	this->csPin = csPin;
+bool ADXL362ng::begin() {
 	SPI.begin();
 	SPI.setDataMode(SPI_MODE0);
 	pinMode(this->csPin,OUTPUT);
@@ -22,6 +25,11 @@ bool ADXL362ng::begin(uint16_t csPin) {
 		return(true);
 	}
 	return false;
+}
+
+bool ADXL362ng::begin(uint8_t csPin) {
+	this->csPin = csPin;
+	return(begin());
 }
 
 // Check that an ADXL362 sensor is connected

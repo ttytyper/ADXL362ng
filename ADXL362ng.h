@@ -91,7 +91,9 @@ class ADXL362ng {
 public:
 	/* Constructor and general methods */
 	ADXL362ng();
-	bool begin(uint16_t csPin);
+	ADXL362ng(uint8_t csPin);
+	bool begin();
+	bool begin(uint8_t csPin);
 	bool isValidAdxl362();
 	bool ready();
 	/* Helper(s) for common use cases */
@@ -175,7 +177,7 @@ public:
 	/* Debugging */
 	void printRegisters(Stream *debug);
 private:
-	uint16_t csPin;
+	uint8_t csPin;
 	int8_t readRegister(byte address);
 	bool writeDoubleRegister(byte startAddress, int16_t value, int16_t mask=0xffff);
 	int16_t readDoubleRegister(byte startAddress);
